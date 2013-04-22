@@ -72,7 +72,7 @@
 		</repository>
 	</repositories>
 
-    <distributionManagement> 
+    <distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>maven.i2cat.net</id>
@@ -144,7 +144,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 
+			<!--
 			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-dependency-plugin</artifactId>
