@@ -11,4 +11,4 @@ mvn deploy:deploy-file -Durl=file://$HOME/maven-stage \
 
 3. scp contents of maven-stage to internal maven repository:
 
-cd $HOME/maven-stage; scp -r . brain:/vendors_repo/m2
+cd $HOME/maven-stage; scp -r . brain:/vendors_repo/tools/m2
