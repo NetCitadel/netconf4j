@@ -9,4 +9,6 @@ mvn deploy:deploy-file -Durl=file://$HOME/maven-stage \
                        -Dsources=./target/netconf4j-0.0.4-SNAPSHOT-sources.jar \
                        -Djavadoc=./target/netconf4j-0.0.4-SNAPSHOT-javadoc.jar
 
-3. scp contents of maven-stage to internal maven repository.
+3. scp contents of maven-stage to internal maven repository:
+
+cd $HOME/maven-stage; scp -r . brain:/vendors_repo/m2
