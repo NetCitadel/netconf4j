@@ -23,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.UncheckedTimeoutException;
+import net.i2cat.netconf.errors.TransportException;
+import net.i2cat.netconf.rpc.Abort;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -30,7 +32,8 @@ import net.i2cat.netconf.rpc.RPCElement;
 
 public class MessageQueue {
 
-	static Log							log	= LogFactory.getLog(MessageQueue.class);
+    public static final String ABORT_MESSAGE_ID = "__ABORT_MESSAGE_ID__";
+    static Log							log	= LogFactory.getLog(MessageQueue.class);
 	Vector<MessageQueueListener>		listeners;
 	LinkedHashMap<String, RPCElement>	queue;
 
@@ -132,8 +135,15 @@ public class MessageQueue {
         Callable<RPCElement> consumeCaller = new Callable<RPCElement>() {
             public RPCElement call() throws Exception {
                 RPCElement element;
+                RPCElement abortElement;
                 synchronized (queue) {
                     while ((element = consumeById(messageIdFinal)) == null) {
+
+                        if ((abortElement = consumeById(ABORT_MESSAGE_ID)) != null) {
+                            Abort abort = (Abort)abortElement;
+                            throw new TransportException("ABORTING: blockingConsumeById(" + messageIdFinal + "): "
+                                                         + abort.getMessage(), abort.getException());
+                        }
                         try {
                             log.debug("Waiting (" + messageIdFinal + ")...");
                             queue.wait();
