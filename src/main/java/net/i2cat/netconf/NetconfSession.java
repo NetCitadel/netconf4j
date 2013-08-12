@@ -198,21 +198,21 @@ public class NetconfSession implements TransportListener, MessageQueueListener, 
 		transport.sendAsyncQuery(query.getRpcElement());
 
 		log.info("Sent. Waiting for response...");
-        Reply reply = null;
-        try {
-            if (sessionContext.containsKey(SessionContext.TIMEOUT)) {
-                reply = (Reply) messageQueue.blockingConsumeById(query.getMessageId(), sessionContext.getTimeout());
-            } else {
-                reply = (Reply) messageQueue.blockingConsumeById(query.getMessageId());
-            }
-        } catch (UncheckedTimeoutException e) {
-            throw new TransportException("Timeout while waiting for reply to query.", e);
-        } catch (TransportException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new TransportException("Error getting reply to query: " + e.getMessage(), e);
-        }
-        log.debug("--------------------------------------------------");
+		Reply reply = null;
+		try {
+			if (sessionContext.containsKey(SessionContext.TIMEOUT)) {
+				reply = (Reply) messageQueue.blockingConsumeById(query.getMessageId(), sessionContext.getTimeout());
+			} else {
+				reply = (Reply) messageQueue.blockingConsumeById(query.getMessageId());
+			}
+		} catch (UncheckedTimeoutException e) {
+			throw new TransportException("Timeout while waiting for reply to query.", e);
+		} catch (TransportException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TransportException("Error getting reply to query: " + e.getMessage(), e);
+		}
+		log.debug("--------------------------------------------------");
 		log.debug("receiving REPLY ");
 		log.debug(reply.getContain());
 		log.debug("--------------------------------------------------");
