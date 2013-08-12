@@ -16,4 +16,4 @@ number in pom.xml. If you change the version number, you must update this mvn de
 
 3. scp contents of maven-stage to internal maven repository:
 
-cd $HOME/maven-stage; rsync -axvP . brain:/vendors_repo/tools/m2
+cd $HOME/maven-stage/m2; rsync -axvP . brain:/vendors_repo/tools/m2
