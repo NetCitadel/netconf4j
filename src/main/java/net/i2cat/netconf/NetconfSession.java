@@ -40,26 +40,16 @@ import org.apache.commons.logging.LogFactory;
 
 public class NetconfSession implements TransportListener, MessageQueueListener, INetconfSession {
 
-	// TimerKeepAlive timerKeepAlive;
+	private Log log = LogFactory.getLog(NetconfSession.class);
 
-	public static final int	PERIOD	= 3;										// PERIOD
-	// OF
-	// 3
-	// MINS
+	// Period of 3 mins.
+	public static final int	PERIOD = 3; 
 
-	private Log				log		= LogFactory.getLog(NetconfSession.class);
-
-	//
-	SessionContext			sessionContext;
-
-	Transport				transport;
-	// URI transportId;
-
-	TransportFactory		transportFactory;
-
-	String					sessionId;
-
-	MessageQueue			messageQueue;
+	SessionContext		sessionContext;
+	Transport		transport;
+	TransportFactory	transportFactory;
+	String			sessionId;
+	MessageQueue		messageQueue;
 
 	public NetconfSession(SessionContext sessionContext) throws TransportNotRegisteredException, ConfigurationException {
 		this(sessionContext, new TransportFactory());
@@ -204,6 +194,8 @@ public class NetconfSession implements TransportListener, MessageQueueListener, 
 			}
 		} catch (UncheckedTimeoutException e) {
 			throw new TransportException("Timeout while waiting for reply to query.", e);
+		} catch (TransportException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new TransportException("Error getting reply to query: " + e.getMessage(), e);
 		}
