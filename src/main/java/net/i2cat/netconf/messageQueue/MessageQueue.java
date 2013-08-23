@@ -167,7 +167,9 @@ public class MessageQueue {
 			return timeLimiter.callWithTimeout(consumeCaller, timeout, TimeUnit.MILLISECONDS, true);
 		} catch (UncheckedTimeoutException e) {
 			log.debug("BlockingConsumeById(messageId=" + messageId + ") failed due to timeout.", e);
-			throw e;
+			// We need to create a new one because e's message is "java.util.concurrent.TimeoutException" and we
+			// don't want code strings to show up in the details column and therefore in the UI.
+			throw new UncheckedTimeoutException(); 
 		} catch (Exception e) {
 			log.debug("BlockingConsumeById(messageId=" + messageId + ") failed.", e);
 			throw e;
